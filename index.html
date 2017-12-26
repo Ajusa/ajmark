@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="data/aj.min.css">
+    <link rel="stylesheet" href="data/spectre-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="data/marked.js"></script>
+    <style>
+    p {
+        font-size: 1.7rem
+    }
+
+    textarea {
+        resize: none
+    }
+    </style>
+</head>
+
+<body>
+    <div class="off-canvas" id="app">
+        <!-- off-screen toggle button -->
+        <div class="off-canvas-toggle bg-white black f4 p3 hand" onclick="window.location='#sidebar-id'"><i class="icon icon-menu"></i></div>
+        <div id="sidebar-id" class="off-canvas-sidebar bg-white ph4">
+            <h3 class="fw4 mt3 tracked">ajmark</h3>
+            <div class="dim hand mt4 pv2 f6" @click="open">Open File</div>
+            <div class="dim hand pv2 f6" @click="newFile">New File</div>
+        </div>
+        <a class="off-canvas-overlay" href="#close"></a>
+        <div class="off-canvas-content">
+            <div class="ph4 mh4">
+                <div class="row cf">
+                    <div class="six columns mt2">
+                        <div class="tracked b white-3 ttu mv2 tc">Markdown</div>
+                        <textarea class="f6 overflow-y-auto" v-model="display.raw" style="border: none; height: 85vh"></textarea>
+                        <button @click="save">{{display.raw != original ? 'Click to Save' : 'Saved' }}</button>
+                    </div>
+                    <div class="six columns">
+                        <div class="tracked b white-3 ttu mv2 tc">Output</div>
+                        <div style="height: 85vh" class="overflow-y-auto overflow-x-hidden" v-html="m(display.raw)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        display: {
+            raw: 'Type markdown here...',
+        },
+        m: marked,
+        original: ""
+    },
+    methods: {
+        setText: function(text) {
+            this.display.raw = text
+            this.original = this.display.raw
+        },
+        open: function() {
+            window.external.invoke_('open')
+            window.location = '#close'
+        },
+        save: function() {
+            window.external.invoke_(this.display.raw)
+            this.original = this.display.raw
+        },
+        newFile: function(){
+            this.display.raw = ""
+            window.external.invoke_('new')
+        }
+    }
+})
+</script>
+
+</html>

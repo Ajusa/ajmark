@@ -6,13 +6,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="data/aj.min.css">
     <link rel="stylesheet" href="data/spectre-icons.min.css">
+    <link rel="stylesheet" href="data/github-markdown.css">
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="data/marked.js"></script>
     <style>
-    p {
-        font-size: 1.7rem
-    }
-
     textarea {
         resize: none
     }
@@ -39,7 +36,7 @@
                     </div>
                     <div class="six columns">
                         <div class="tracked b white-3 ttu mv2 tc">Output</div>
-                        <div style="height: 85vh" class="overflow-y-auto overflow-x-hidden" v-html="m(display.raw)"></div>
+                        <div style="height: 85vh" class="overflow-y-auto overflow-x-hidden markdown-body" v-html="m(display.raw)"></div>
                     </div>
                 </div>
             </div>

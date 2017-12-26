@@ -5,14 +5,15 @@ using namespace std;
 #include <fstream>
 #include <unistd.h>
 #include "lib/webview.h"
-#include "lib/tinyfiledialogs.c"
 #include "lib/escape.h"
 static char * filter[2] = { "*.md", "*.txt" };
 string lastFile;
 static void cb(struct webview *w, const char *arg) {
 	string raw = arg;
 	if (raw == "open"){
-		auto filename = tinyfd_openFileDialog("Open a markdown file", "", 2, filter, NULL, 0);
+		char p[1000];
+		webview_dialog(w, WEBVIEW_DIALOG_TYPE_OPEN, 0, "Open a markdown file", "", p, 1000);
+		auto filename = p;
 		string fileText;
 		if (!(filename == NULL)){
 			ifstream t(filename);
@@ -33,7 +34,9 @@ static void cb(struct webview *w, const char *arg) {
 		out << raw;
 	}
 	else{ 
-		auto save = tinyfd_saveFileDialog("Save markdown file", "filename.md", 2, filter, NULL);
+		char p[1000];
+		webview_dialog(w, WEBVIEW_DIALOG_TYPE_SAVE, 0, "Save a markdown file", "", p, 1000);
+		auto save = p;
 		if (!(save == NULL)){
 			ofstream out(save);
 			out << raw;
